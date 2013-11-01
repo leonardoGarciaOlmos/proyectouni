@@ -1,3 +1,3 @@
 RewriteEngine on
 RewriteCond $1 !^(index\.php|images|assets|robots\.txt|css)
-RewriteRule ^(.*)$ /adsi_v1.1/index.php/$1 [L]
+RewriteRule ^(.*)$ /proyectouni/index.php/$1 [L]

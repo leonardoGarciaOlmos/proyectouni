@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://192.168.10.38/adsi_v1.1';
+$config['base_url']	= 'http://localhost/proyectouni';
 
 
 //
