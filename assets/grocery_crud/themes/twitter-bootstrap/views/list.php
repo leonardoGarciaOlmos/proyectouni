@@ -37,6 +37,15 @@ if(!empty($list)){ ?>
 							</button>
 							<ul class="dropdown-menu">
 								<?php
+								if(!$unset_read){?>
+									<li>
+										<a href="<?php echo $row->read_url?>" title="<?php echo $this->l('list_view')?> <?php echo $subject?>">
+											<i class="icon-search"></i>
+											<?php echo $this->l('list_view') . ' ' . $subject; ?>
+										</a>
+									</li>
+								<?php	
+								}							
 								if(!$unset_edit){?>
 									<li>
 										<a href="<?php echo $row->edit_url?>" title="<?php echo $this->l('list_edit')?> <?php echo $subject?>">

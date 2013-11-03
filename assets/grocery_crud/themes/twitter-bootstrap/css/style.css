@@ -11,3 +11,8 @@
 	background:url('images/loading.gif') left top no-repeat;
 	padding-left: 30px;
 }
+
+ .form-horizontal .control-group.control-group-float {
+width: 400px;
+float: left;
+}

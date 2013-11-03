@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
 	//Declaracion de variables
-	var domain = 'http://192.168.5.10/adsi/';
+	var domain = base_url;
 	var roleId = $("input[name='role_id']").val();
 	var systemId = $("input[name='system_id']").val();
 	var url = '';

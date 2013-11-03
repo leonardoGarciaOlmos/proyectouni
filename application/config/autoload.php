@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('smarty', 'database');
+$autoload['libraries'] = array('smarty', 'database','session');
 
 
 
@@ -65,7 +65,7 @@ $autoload['libraries'] = array('smarty', 'database');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url');
+$autoload['helper'] = array('url','audit');
 
 
 /*

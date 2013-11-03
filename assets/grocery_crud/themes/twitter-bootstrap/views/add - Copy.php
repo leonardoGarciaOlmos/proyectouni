@@ -2,13 +2,12 @@
 // $this->set_css($this->default_theme_path.'/twitter-bootstrap/css/bootstrap.min.css');
 // $this->set_css($this->default_theme_path.'/twitter-bootstrap/css/bootstrap-responsive.min.css');
 $this->set_css($this->default_theme_path.'/twitter-bootstrap/css/style.css');
-// $this->set_css($this->default_theme_path.'/twitter-bootstrap/css/jquery-ui/flick/jquery-ui-1.9.2.custom.css');
+//$this->set_css($this->default_theme_path.'/twitter-bootstrap/css/jquery-ui/flick/jquery-ui-1.9.2.custom.css');
 
-//$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
+//this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
 
 //	JAVASCRIPTS - JQUERY-UI
 $this->set_js($this->default_theme_path.'/twitter-bootstrap/js/jquery-ui/jquery-ui-1.9.2.custom.js');
-
 //	JAVASCRIPTS - JQUERY LAZY-LOAD
 $this->set_js_lib($this->default_javascript_path.'/common/lazyload-min.js');
 
@@ -35,63 +34,53 @@ $this->set_js($this->default_javascript_path.'/jquery_plugins/jquery.fancybox-1.
 //	JAVASCRIPTS - JQUERY EASING
 $this->set_js($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
 
-//	JAVASCRIPTS - JQUERY UI
-//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
-//$this->load_js_jqueryui();
-
-//	JAVASCRIPTS - twitter-bootstrap - CONFIGURAÇÕES
-$this->set_js($this->default_theme_path.'/twitter-bootstrap/js/app/twitter-bootstrap-edit.js');
+$this->set_js_config($this->default_theme_path.'/twitter-bootstrap/js/app/twitter-bootstrap-add.js');
 //	JAVASCRIPTS - JQUERY-FUNCTIONS
 $this->set_js($this->default_theme_path.'/twitter-bootstrap/js/jquery.functions.js');
 ?>
+
 <div class="twitter-bootstrap crud-form">
 
-	<h2 class="span12"><?php echo $this->l('form_edit'); ?> <?php echo $subject?></h2>
+	<h2 class="span12"><?php echo $this->l('form_add'); ?> <?php echo $subject?></h2>
 
 	<!-- CONTENT FOR ALERT MESSAGES -->
 	<div id="message-box" class="span12"></div>
-
 	<div id="main-table-box span12">
 		<?php
-		echo form_open( $update_url, 'method="post" id="crudForm" class="form-horizontal" autocomplete="off" enctype="multipart/form-data"');
-			foreach($fields as $field){ ?>
-<div class="control-group control-group-float">
-	<label class="control-label" for="<?php echo $field->field_name; ?>" id="<?php echo $field->field_name; ?>_display_as_box">
-	 <?php echo $input_fields[$field->field_name]->display_as; ?><?php echo ($input_fields[$field->field_name]->required)? '<span class="required">*</span>' : ""; ?> :</label>
-    <div class="controls" id="<?php echo $field->field_name; ?>_input_box">
-		<!-- <input type="text" name="username" value="" id="username" placeholder="Usuario" 
-		class="ui-autocomplete-input" autocomplete="off"> -->
-		<?php echo $input_fields[$field->field_name]->input?>
-		<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>		    
-	</div>
-	<div class="clearfix"></div>
-</div>
-
-
+		echo form_open( $insert_url, 'method="post" id="crudForm" class="form-div span12" autocomplete="off" enctype="multipart/form-data"');
+			foreach($fields as $field)
+			{
+				?>
+				<div class="form-field-box" id="<?php echo $field->field_name; ?>_field_box">
+					<div class="form-display-as-box" id="<?php echo $field->field_name; ?>_display_as_box">
+						<?php echo $input_fields[$field->field_name]->display_as; ?><?php echo ($input_fields[$field->field_name]->required)? '<span class="required">*</span>' : ""; ?> :
+					</div>
+					<div class="form-input-box control-group" id="<?php echo $field->field_name; ?>_input_box">
+						<?php echo $input_fields[$field->field_name]->input?>
+					</div>
+					<div class="clear"></div>
+				</div>
 				<?php
 			}
 			//	Hidden Elements
-			if(!empty($hidden_fields)){
-				foreach($hidden_fields as $hidden_field){
-					echo $hidden_field->input;
-				}
-			}?>
-<div class="clearfix"></div>
-<div>
-			<input type="button" value="<?php echo $this->l('form_update_changes'); ?>" class="btn btn-large btn-primary submit-form"/>
+			foreach($hidden_fields as $hidden_field){
+				echo $hidden_field->input;
+			}
+			?>
+
+			<input type="button" value="<?php echo $this->l('form_save'); ?>"  class="btn btn-large btn-primary submit-form"/>
 			<?php 	if(!$this->unset_back_to_list) { ?>
-				<input type="button" value="<?php echo $this->l('form_update_and_go_back'); ?>" id="save-and-go-back-button" class="btn btn-large btn-primary"/>
+				<input type="button" value="<?php echo $this->l('form_save_and_go_back'); ?>" id="save-and-go-back-button"  class="btn btn-large btn-primary"/>
 				<input type="button" value="<?php echo $this->l('form_cancel'); ?>" class="btn btn-large return-to-list" />
 			<?php 	} ?>
 
 			<div class="hide loading" id="ajax-loading"><?php echo $this->l('form_update_loading'); ?></div>
-</div>
 		<?php echo form_close(); ?>
 	</div>
 </div>
 <script>
 	var validation_url = "<?php echo $validation_url?>",
 		list_url = "<?php echo $list_url?>",
-		message_alert_edit_form = "<?php echo $this->l('alert_edit_form')?>",
-		message_update_error = "<?php echo $this->l('update_error')?>";
+		message_alert_add_form = "<?php echo $this->l('alert_add_form')?>",
+		message_insert_error = "<?php echo $this->l('insert_error')?>";
 </script>

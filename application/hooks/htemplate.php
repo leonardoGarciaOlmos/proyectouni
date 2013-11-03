@@ -29,6 +29,7 @@
 			$ci =& get_instance();
 			$ci->load->model('system');
 			$array = $ci->system->loadMenu(12); /* Falta el parametro del roleId */
+			//print_r($array);
 			$ci->smarty->assign('menu', $array);
 		}
 

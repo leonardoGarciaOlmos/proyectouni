@@ -23,6 +23,14 @@ $(function(){
         return false;
     });
 
+    $('#cancel-button').on('click',function(){
+        window.location = list_url;
+      //  goToList('','');
+    });
+
+    
+
+
 });
 
 //  Mensagens para a aplicação
@@ -38,6 +46,8 @@ var alert_message = function(type_message, text_message){
     }, 7000);
     return false;
 };
+
+
 
 //  Simula o efeito RESET no formulário de inserção de conteudo
 function clearForm()
@@ -147,6 +157,11 @@ function submitCrudForm( crud_form, save_and_close ){
         }
     });
     return false;
+
+
+
+
+
 }
 
 //  Retornar para a tabela de listagem de dados inicial

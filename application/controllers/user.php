@@ -202,7 +202,7 @@
 				$val->set_rules('inputApellido',		'Apellido', 			'alpha|trim|required|min_length[4]|max_length[40]');
 				$val->set_rules('inputEmail',			'Email', 				'trim|required|valid_email|is_unique[user.email]');
 				$val->set_rules('inputSex[]',			'Sexo', 				'required');
-				$val->set_rules('inputDate',			'Fecha de nacimiento',  'callback_validate_date');
+			//	$val->set_rules('inputDate',			'Fecha de nacimiento',  'callback_validate_date');
 				if ($vendedor){
 					/*
 						reglas para los vendedores.

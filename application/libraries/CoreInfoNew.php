@@ -8,6 +8,10 @@
 		private $data;
 		private $config;
 
+		public function __construct(){
+			$this->_init();
+		}
+		
 		public function loadConfig($config){
 			$this->config = $config;
 
@@ -23,9 +27,7 @@
 			}
 		}
 
-		public function __construct(){
-			$this->_init();
-		}
+
 
 		public function _init(){
 			$this->_initData();

@@ -53,21 +53,17 @@ $this->set_js($this->default_theme_path.'/twitter-bootstrap/js/jquery.functions.
 
 	<div id="main-table-box span12">
 		<?php
-		echo form_open( $update_url, 'method="post" id="crudForm" class="form-horizontal" autocomplete="off" enctype="multipart/form-data"');
+		echo form_open( $update_url, 'method="post" id="crudForm" class="form-div span12" autocomplete="off" enctype="multipart/form-data"');
 			foreach($fields as $field){ ?>
-<div class="control-group control-group-float">
-	<label class="control-label" for="<?php echo $field->field_name; ?>" id="<?php echo $field->field_name; ?>_display_as_box">
-	 <?php echo $input_fields[$field->field_name]->display_as; ?><?php echo ($input_fields[$field->field_name]->required)? '<span class="required">*</span>' : ""; ?> :</label>
-    <div class="controls" id="<?php echo $field->field_name; ?>_input_box">
-		<!-- <input type="text" name="username" value="" id="username" placeholder="Usuario" 
-		class="ui-autocomplete-input" autocomplete="off"> -->
-		<?php echo $input_fields[$field->field_name]->input?>
-		<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>		    
-	</div>
-	<div class="clearfix"></div>
-</div>
-
-
+				<div class="form-field-box" id="<?php echo $field->field_name; ?>_field_box">
+					<div class="form-display-as-box" id="<?php echo $field->field_name; ?>_display_as_box">
+						<?php echo $input_fields[$field->field_name]->display_as?><?php echo ($input_fields[$field->field_name]->required)? '<span class="required">*</span>' : ""?> :
+					</div>
+					<div class="form-input-box" id="<?php echo $field->field_name; ?>_input_box">
+						<?php echo $input_fields[$field->field_name]->input?>
+					</div>
+					<div class="clear"></div>
+				</div>
 				<?php
 			}
 			//	Hidden Elements
@@ -76,8 +72,6 @@ $this->set_js($this->default_theme_path.'/twitter-bootstrap/js/jquery.functions.
 					echo $hidden_field->input;
 				}
 			}?>
-<div class="clearfix"></div>
-<div>
 			<input type="button" value="<?php echo $this->l('form_update_changes'); ?>" class="btn btn-large btn-primary submit-form"/>
 			<?php 	if(!$this->unset_back_to_list) { ?>
 				<input type="button" value="<?php echo $this->l('form_update_and_go_back'); ?>" id="save-and-go-back-button" class="btn btn-large btn-primary"/>
@@ -85,7 +79,7 @@ $this->set_js($this->default_theme_path.'/twitter-bootstrap/js/jquery.functions.
 			<?php 	} ?>
 
 			<div class="hide loading" id="ajax-loading"><?php echo $this->l('form_update_loading'); ?></div>
-</div>
+
 		<?php echo form_close(); ?>
 	</div>
 </div>

@@ -3,7 +3,7 @@
 
 		private $systemId;
 
-		public function index($systemId = 0)
+		public function index($systemId = 4)
 		{
 			/*$this->load->model('role');
 			var_dump($this->role);*/

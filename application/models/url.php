@@ -35,6 +35,7 @@
 			$return['response_message'] = array('message' => 'Se ha insertado completamente todos los datos');
 			foreach ($menuData as $key => $value){
 				if($key!='delet'){
+					var_dump($key,$value);
 					if($this->durl->getMenuById($value['url_id'])){
 						$return['success'] = $this->durl->updateMenu($value, $value['url_id']);
 					}else{
@@ -45,7 +46,9 @@
 						$return['success'] = $this->durl->deleteMenu($value);
 					}
 				}
+
 				if($return['success'] == false){
+					
 					$return['response_message'] =  array('message' => 'Ha ocurrido un error al intentar insertar todos los datos');
 					break;
 				}
