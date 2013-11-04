@@ -70,17 +70,16 @@
 		private function orderInsertMenu( $data ){
 			//var_dump($data['check']);
 			foreach ($data['id'] as $key => $value){
-				 $parent = 1;
+/*				 $parent = 1;
 				foreach ($data['check'] as $key => $value) {
 					if($parent == $value){
 						$parent = 0;
 					}
-				}
-			//	$parent = (in_array($value ,$data['check']))?0:1;
+				}*/
+				$parent = (in_array($value ,$data['check']))?0:1;
 				//var_dump($key);
 				if($value == 43){
-
-				//var_dump($data['hijos'][$key],$parent);
+				//	print_r($data['hijos'][$key],$parent);
 				}
 				if($data['hijos'][$key] == '' AND $parent == 1){
 					$parent = 1;

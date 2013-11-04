@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.14, created on 2013-11-03 17:43:06
+<?php /* Smarty version Smarty-3.1.14, created on 2013-11-04 16:42:37
          compiled from "application\views\templates\horario-content.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1969152768b2ac91d45-04889092%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '2fdcedec6e171e645be92fd110e7f803d3387e92' => 
     array (
       0 => 'application\\views\\templates\\horario-content.tpl',
-      1 => 1383492744,
+      1 => 1383570864,
       2 => 'file',
     ),
   ),
@@ -15,6 +15,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.14',
+  'unifunc' => 'content_52768b2adc0c75_81741416',
   'variables' => 
   array (
     'tiporef' => 0,
@@ -26,8 +28,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'base_url' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.14',
-  'unifunc' => 'content_52768b2adc0c75_81741416',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_52768b2adc0c75_81741416')) {function content_52768b2adc0c75_81741416($_smarty_tpl) {?><h1>Generador de Horarios</h1>
 <hr>
