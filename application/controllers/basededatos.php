@@ -20,7 +20,6 @@ class Basededatos_Controller extends CI_Controller
 
 	public function generateBackup()
 	{
-		$return = false;
 		$nombre_BD = 'backup' . date('dmY') . '.gz';
 		$prefs = array(
                 'tables'      => array(),  		// Array of tables to backup.
@@ -36,15 +35,13 @@ class Basededatos_Controller extends CI_Controller
 		$backup =& $this->dbutil->backup($prefs);
 		$this->load->helper('download');
 		force_download($nombre_BD, $backup);
-		$return = true;
-
-		echo json_encode($return);
 	}
 
 
 	public function restore()
 	{
 		$js_files['dfsdf'] = base_url().'assets/js/base_dato.js';
+		$js_files['asddd'] = base_url().'assets/js/bootbox.min.js';
 		$this->smarty->assign('process', 'restore');
 		$output = $this->smarty->fetch('BD.tpl');
 
@@ -52,6 +49,45 @@ class Basededatos_Controller extends CI_Controller
 	    $this->smarty->assign('css_files','');
 	    $this->smarty->assign('js_files',$js_files);
 	    $this->smarty->display('index.tpl');
+	}
+
+
+	public function generateRestore()
+	{
+		$config['upload_path'] 		= './BD/';
+		$config['allowed_types']	= '*';
+		$config['overwrite']		= TRUE;
+		$this->load->library('upload', $config);
+		
+
+		if ( !$this->upload->do_upload('input_file_restore') )
+		{
+			$this->smarty->assign('process', 'failRestore');
+			$output = $this->smarty->fetch('BD.tpl');
+
+		    $this->smarty->assign('output', $output);
+		    $this->smarty->assign('css_files','');
+		    $this->smarty->assign('js_files','');
+		    $this->smarty->display('index.tpl');
+		}
+		else
+		{
+			$datos = $this->upload->data();
+			$this->load->model('Basededatos');
+			$obj = new Basededatos;
+			$return = $obj->processRestore($datos['full_path']);
+			if($return !== FALSE)
+				$this->smarty->assign('process', 'successRestore');
+			else
+				$this->smarty->assign('process', 'failRestore');
+
+			$output = $this->smarty->fetch('BD.tpl');
+
+		    $this->smarty->assign('output', $output);
+		    $this->smarty->assign('css_files','');
+		    $this->smarty->assign('js_files','');
+		    $this->smarty->display('index.tpl');
+		}
 	}
 
 }
