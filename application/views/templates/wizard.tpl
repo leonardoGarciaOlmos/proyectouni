@@ -1,3 +1,6 @@
+<input type="hidden" value="{$totalStep}" id="total-step" />
+
+
 <div class="widget-box">
 	<div class="widget-header widget-header-blue widget-header-flat">
 		<h4 class="lighter">{$title}</h4>
@@ -14,7 +17,7 @@
 							<li data-target="#step{$key+1}" class="">
 						{/if}
 							<span class="step">{$key+1}</span>
-							<span class="title">Seleccionar Carrea</span>
+							<span class="title">{$data}</span>
 						</li>
 					{/foreach}
 				</ul>
@@ -33,22 +36,103 @@
 
 					
 					{if $data eq "selectCarre"}
-						<select>
-							<option>Valor</option>
-						</select>
+						<h3 class="lighter block green">Seleccione la carrera de su preferencia</h3>
+						<div class="center">
+							<h3>Departamento</h3>
+							<select id="select_departamento">
+								<option value="">Seleccionar departamento</option>
+								{foreach from=$depart key=key item=item}
+									<option value="{$item['id']}">{$item['nombre']}</option>
+								{/foreach}
+							</select>
+
+							<h3>Carrera</h3>
+							<select disabled="disabled" id="select_carrera">
+								<option value="">...</option>
+							</select>
+						</div>
 					{/if}
 
 					{if $data eq "addMateria"}
-						<select>
-							<option>Valor</option>
-						</select>
+						<div class="row-fluid">
+							<div class="span9">
+								<h3 class="lighter block green">Agregar las materias a cada semestre</h3>
+							</div>
+							<div class="span3">
+								<button style="float:right;" class="btn btn-primary" name="agregarSemes" id="addSemes"><i class="icon-plus icon-white"></i> Agregar Semestre</button>
+							</div>
+						</div>
+						
+
+						<div id="accordion" class="accordion-style1 panel-group">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+											<i class="bigger-110 icon-angle-right" data-icon-hide="icon-angle-down" data-icon-show="icon-angle-right"></i>
+											&nbsp;Group Item #1
+										</a>
+									</h4>
+								</div>
+
+								<div class="panel-collapse collapse" id="collapseOne" style="height: 0px;">
+									<div class="panel-body">
+										Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+									</div>
+								</div>
+							</div>
+
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+											<i class="bigger-110 icon-angle-right" data-icon-hide="icon-angle-down" data-icon-show="icon-angle-right"></i>
+											&nbsp;Group Item #2
+										</a>
+									</h4>
+								</div>
+
+								<div class="panel-collapse collapse" id="collapseTwo" style="height: 0px;">
+									<div class="panel-body">
+										Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+									</div>
+								</div>
+							</div>
+
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+											<i class="bigger-110 icon-angle-right" data-icon-hide="icon-angle-down" data-icon-show="icon-angle-right"></i>
+											&nbsp;Group Item #3
+										</a>
+									</h4>
+								</div>
+
+								<div class="panel-collapse collapse" id="collapseThree" style="height: 0px;">
+									<div class="panel-body">
+										Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et.
+									</div>
+								</div>
+							</div>
+						</div>
 					{/if}
 
 					{if $data eq "addElect"}
-						<select>
-							<option>Valor</option>
-						</select>
+						<div class="center">
+							<select>
+								<option>Valor</option>
+							</select>
+						</div>
 					{/if}
+
+					{if $data eq "finish"}
+						<div class="center">
+							<h3 class="green">Proceso Finalizado</h3>
+							El proceso de insercion de datos ha culminado, precione finalizar para concluir
+						</div>
+					{/if}
+
 
 					</div>
 
@@ -58,13 +142,13 @@
 			<hr>
 
 			<div class="row-fluid wizard-actions">
-				<button class="btn btn-prev" disabled="disabled">
+				<button class="btn btn-prev" disabled="disabled" id="prev">
 					<i class="icon-arrow-left"></i>
 					Prev
 				</button>
 
-				<button class="btn btn-success btn-next" data-last="Finish ">
-					Next
+				<button class="btn btn-success btn-next" data-last="Finish" id="next">
+					Sign
 					<i class="icon-arrow-right icon-on-right"></i>
 				</button>
 			</div>

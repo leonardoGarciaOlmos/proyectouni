@@ -51,20 +51,40 @@ class Pensum_Controller extends CI_Controller
 
 	public function add()
 	{
-		$step = array('Seleccionar Carrea', 'Añadir Materia', 'Añadir Electivas');
-		$stepConten = array('selectCarre', 'addMateria', 'addElect');
+		$this->load->model('Pensum');
+		$class = new Pensum;
+		$step = array('Seleccionar Carrea', 'Añadir Materia', 'Añadir Electivas', 'Finalizar');
+		$stepConten = array('selectCarre', 'addMateria', 'addElect', 'finish');
+		$totalStep = count($step);
 
+
+		$this->smarty->assign('totalStep', $totalStep);
+		$this->smarty->assign('ciPath', base_url());
 		$this->smarty->assign('title', 'Agregar Pensum');
 	    $this->smarty->assign('step', $step);
 	    $this->smarty->assign('stepConten', $stepConten);
+	    $this->smarty->assign('depart', $class->get_departamento());
 
-	    $js_files = array(base_url().'assets/template/js/ace-elements.min.js'); 
+
 		$output = $this->smarty->fetch('wizard.tpl');
+		$js_files = array(base_url().'assets/template/js/ace-elements.min.js',
+	    				  base_url().'assets/js/pensum.js',
+	    				  base_url().'assets/js/semestre.js'); 
 
 	    $this->smarty->assign('output', $output);
 	    $this->smarty->assign('css_files','');
 	    $this->smarty->assign('js_files', $js_files);
 	    $this->smarty->display('index.tpl');
+	}
+
+
+	public function carrera()
+	{
+		$this->load->model('Pensum');
+		$class = new Pensum;
+
+		$array = $class->get_carrera($_POST['id_dep']);
+		echo json_encode($array);
 	}
 
 }
