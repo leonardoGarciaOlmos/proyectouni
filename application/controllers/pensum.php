@@ -69,10 +69,11 @@ class Pensum_Controller extends CI_Controller
 		$output = $this->smarty->fetch('wizard.tpl');
 		$js_files = array(base_url().'assets/template/js/ace-elements.min.js',
 	    				  base_url().'assets/js/pensum.js',
-	    				  base_url().'assets/js/semestre.js'); 
+	    				  base_url().'assets/js/semestre.js');
+		$css_files = array(base_url().'assets/css/wisard.css'); 
 
 	    $this->smarty->assign('output', $output);
-	    $this->smarty->assign('css_files','');
+	    $this->smarty->assign('css_files', $css_files);
 	    $this->smarty->assign('js_files', $js_files);
 	    $this->smarty->display('index.tpl');
 	}

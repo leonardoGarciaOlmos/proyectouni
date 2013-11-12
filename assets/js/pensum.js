@@ -43,11 +43,6 @@ $(document).ready(function()
 
 
 	// Controlar el boton de Next y Prev
-	$('button#finish').on('click', function()
-	{
-		alert('funciona');
-	});
-	
 	$buttonNext.on('click', function()
 	{
 		managerStep('next');
@@ -59,15 +54,7 @@ $(document).ready(function()
 	});
 
 	
-	// Agregar semestre
-	$('#addSemes').on('clcik', function()
-	{
-		alert('bien');
-	});
-
-
-
-
+	
 	// ++++++++++ Funciones ++++++++++
 	function buildSelect(objectSelect, objectValue, opc)
 	{
@@ -91,41 +78,49 @@ $(document).ready(function()
 
 	function managerStep(opc)
 	{
-		if(opc === 'next')
+		if(step == totalStep && opc === 'next')
+		{ 
+			window.location = base_url + 'pensum/all'; 
+		}else
 		{
-			$('li[data-target="#step'+ step +'"]').attr('class', 'complete');
-			$('div#step'+ step).attr('class', 'step-pane');
-			step+=1;
-			$('li[data-target="#step'+ step +'"]').attr('class', 'active');
-			$('div#step'+ step).attr('class', 'step-pane active');
+			if(opc === 'next')
+			{
+				$('li[data-target="#step'+ step +'"]').attr('class', 'complete');
+				$('div#step'+ step).attr('class', 'step-pane');
+				step+=1;
+				$('li[data-target="#step'+ step +'"]').attr('class', 'active');
+				$('div#step'+ step).attr('class', 'step-pane active');
 
+			}
+			else if(opc === 'prev')
+			{
+				$('li[data-target="#step'+ step +'"]').attr('class', '');
+				$('div#step'+ step).attr('class', 'step-pane');
+				step-=1;
+				$('li[data-target="#step'+ step +'"]').attr('class', 'active');
+				$('div#step'+ step).attr('class', 'step-pane active');
+			}
+
+			switch(step)
+			{
+				case 1:
+					$buttonPrev.attr('disabled', 'disabled');
+				break;
+
+				case totalStep:
+					$buttonNext.html('Finalizar <i class="icon-arrow-right icon-on-right"></i>');
+					//$buttonNext.attr('id', 'finish');
+				break;
+
+				default:
+					$buttonPrev.removeAttr('disabled');
+					//$buttonNext.attr('id', 'next');
+					$buttonNext.html('Sign <i class="icon-arrow-right icon-on-right"></i>');
+				break;
+			}
 		}
-		else if(opc === 'prev')
-		{
-			$('li[data-target="#step'+ step +'"]').attr('class', '');
-			$('div#step'+ step).attr('class', 'step-pane');
-			step-=1;
-			$('li[data-target="#step'+ step +'"]').attr('class', 'active');
-			$('div#step'+ step).attr('class', 'step-pane active');
-		}
 
-		switch(step)
-		{
-			case 1:
-				$buttonPrev.attr('disabled', 'disabled');
-			break;
-
-			case totalStep:
-				$buttonNext.html('Finalizar <i class="icon-arrow-right icon-on-right"></i>');
-				$buttonNext.attr('id', 'finish');
-			break;
-
-			default:
-				$buttonPrev.removeAttr('disabled');
-				$buttonNext.attr('id', 'next');
-				$buttonNext.html('Sign <i class="icon-arrow-right icon-on-right"></i>');
-			break;
-		}
+		
 	}
 
 
