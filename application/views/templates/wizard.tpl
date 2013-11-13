@@ -1,5 +1,6 @@
 <input type="hidden" value="{$totalStep}" id="total-step" />
-
+<input type="hidden" value="" id="id_carrera" />
+<input type="hidden" value="" id="id_pensum" />
 
 <div class="widget-box">
 	<div class="widget-header widget-header-blue widget-header-flat">
@@ -63,6 +64,7 @@
 							</div>
 						</div>
 						
+						<input type="hidden" value="1" id="num_semestre" />
 						<div id="accordion" class="accordion-style1 panel-group">
 							<h4>No existe semestre ni materia</h4>
 						</div>

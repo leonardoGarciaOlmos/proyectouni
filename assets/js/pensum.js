@@ -6,6 +6,7 @@ $(document).ready(function()
 	$selectCarrer = $('select#select_carrera');
 	$buttonNext = $('button#next');
 	$buttonPrev = $('button#prev');
+	$carrera = $('input#id_carrera');
 	var step = 1;
 	var totalStep = parseInt($('input#total-step').val());
 
@@ -30,7 +31,7 @@ $(document).ready(function()
 				type: 'POST',
 				data: 'id_dep=' + value,
 				dataType: "json",
-				url: base_url + 'pensum/carrera',
+				url: base_url + 'pensum/json_carrera',
 				success: function(arrayObject)
 				{
 					buildSelect($selectCarrer, arrayObject, 'add');
@@ -45,17 +46,53 @@ $(document).ready(function()
 	// Controlar el boton de Next y Prev
 	$buttonNext.on('click', function()
 	{
-		managerStep('next');
+		if(step == 1)
+		{
+			var retVal = validateCarrera($selectCarrer);
+			$carrera.val($selectCarrer.val());
+
+			if(retVal == false)
+				bootbox.alert('Debe seleccionar la carrera para seguir con los siguientes pasos');
+			else if(retVal == true)
+				managerStep('next');
+		}
+		else
+			managerStep('next');
 	});
 
 	$buttonPrev.on('click', function()
 	{
-		managerStep('prev');
+		if(step == 1)
+		{
+			var retVal = validateCarrera($selectCarrer);
+			$carrera.val($selectCarrer.val());
+
+			if(retVal == false)
+				bootbox.alert('Debe seleccionar la carrera para seguir con los siguientes pasos');
+			else if(retVal == true)
+				managerStep('prev');
+		}
+		else
+			managerStep('prev');
 	});
 
 	
 	
 	// ++++++++++ Funciones ++++++++++
+	function validateCarrera(objectSelect)
+	{
+		var valRet = false;
+		var valObject = objectSelect.val(); 
+
+		if(valObject == '')
+			valRet = false;  // No ha sido seleccionado la carrera
+		else
+			valRet = true;	 // ha sido seleccionado la carrera
+
+		return valRet;
+	}
+
+
 	function buildSelect(objectSelect, objectValue, opc)
 	{
 		if(opc === null)
@@ -78,6 +115,8 @@ $(document).ready(function()
 
 	function managerStep(opc)
 	{
+		var ret = false;
+
 		if(step == totalStep && opc === 'next')
 		{ 
 			window.location = base_url + 'pensum/all'; 
@@ -109,12 +148,10 @@ $(document).ready(function()
 
 				case totalStep:
 					$buttonNext.html('Finalizar <i class="icon-arrow-right icon-on-right"></i>');
-					//$buttonNext.attr('id', 'finish');
 				break;
 
 				default:
 					$buttonPrev.removeAttr('disabled');
-					//$buttonNext.attr('id', 'next');
 					$buttonNext.html('Sign <i class="icon-arrow-right icon-on-right"></i>');
 				break;
 			}

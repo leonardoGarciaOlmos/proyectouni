@@ -1,14 +1,38 @@
 $(document).ready(function()
 {
 	$accordion = $('div#accordion');
-	var numSemes = 1;
+	$semestre = $('input#num_semestre');
+	$pensum = $('input#id_pensum');
 
 	// Agregar semestre
 	$('#addSemes').click(function()
 	{
-		var panel;
+		addPensum();
+	});
 
-		panel =  '<div class="panel panel-default">';
+
+
+	// ++++++++++ Funciones ++++++++++
+	function addPensum()
+	{
+		var id_pensum = $pensum.val();
+		var id_carrera = $carrera.val();
+
+		if(id_pensum == '')
+		{
+			
+		}
+		else
+		{
+
+		}
+	}
+
+	function addSemestre()
+	{
+		var numSemes = parseInt($semestre.val());
+
+		var panel =  '<div class="panel panel-default">';
 		panel += '<div class="panel-heading">';
 		panel += '<h3 class="panel-title">';
 		panel += '<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse'+numSemes+'">';
@@ -20,7 +44,23 @@ $(document).ready(function()
 
 		panel += '<div class="panel-collapse collapse" id="collapse'+numSemes+'" style="height: 0px;">';
 		panel += '<div class="panel-body">';
-		panel += 'Anim pariatur cliche reprehenderit,kk';
+		panel += '<input type="hidden" value="'+numSemes+'", name="semestre" id="semestre">';
+        panel += '<input type="hidden" value="" name="materia_id" id="materia_id">';
+        panel += '<div class="span1"> <h4>Materia</h4> </div>'
+        panel += '<div class="span3"> <input type="text" value="" name="materia" id="materia"> </div>';
+        panel += '<div class="span12">';
+        panel += '<table class="table" id="tableMateria">';
+        panel += '<tr>';
+        panel += '<td><h5>Codigo</h5></td>';
+        panel += '<td><h5>Uni. Curricular</h5></td>';
+        panel += '<td><h5>H. Teoricas</h5></td>';
+        panel += '<td><h5>H. Practicas</h5></td>';
+        panel += '<td><h5>Total Horas</h5></td>';
+        panel += '<td><h5>Uni. Credito</h5></td>';
+        panel += '<td><h5>Cod. Prelacion</h5></td>';
+        panel += '<td></td>';
+        panel += '</tr>';
+        panel += '</table>';
 		panel += '</div>';
 		panel += '</div>';
 		panel += '</div>';
@@ -30,6 +70,7 @@ $(document).ready(function()
 		else
 			$accordion.append(panel);
 
-		numSemes += 1;
-	});
+		$semestre.val(++numSemes);
+	}
+
 })

@@ -69,7 +69,9 @@ class Pensum_Controller extends CI_Controller
 		$output = $this->smarty->fetch('wizard.tpl');
 		$js_files = array(base_url().'assets/template/js/ace-elements.min.js',
 	    				  base_url().'assets/js/pensum.js',
-	    				  base_url().'assets/js/semestre.js');
+	    				  base_url().'assets/js/semestre.js',
+	    				  base_url().'assets/js/bootbox.min.js');
+
 		$css_files = array(base_url().'assets/css/wisard.css'); 
 
 	    $this->smarty->assign('output', $output);
@@ -79,13 +81,19 @@ class Pensum_Controller extends CI_Controller
 	}
 
 
-	public function carrera()
+	public function json_carrera()
 	{
 		$this->load->model('Pensum');
 		$class = new Pensum;
 
 		$array = $class->get_carrera($_POST['id_dep']);
 		echo json_encode($array);
+	}
+
+
+	public function json_insert_pensum()
+	{
+		
 	}
 
 }

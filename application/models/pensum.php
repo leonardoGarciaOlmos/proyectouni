@@ -23,5 +23,13 @@ class Pensum extends CI_Model
 		$query = $this->db->get();
 		return $query->result_array();
 	}
+
+	public function insert_pensum($id_carrera)
+	{
+		$data = array( 'estatus' => 'ACTIVO' ,
+					   'carrera_id' => $id_carrera);
+
+		$this->db->insert('pensum', $data); 
+	}
 }
 ?>
