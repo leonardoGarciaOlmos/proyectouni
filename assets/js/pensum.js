@@ -43,6 +43,39 @@ $(document).ready(function()
 	})
 
 
+	$selectCarrer.on('change', function()
+	{
+		var val = $(this).val();
+		var pensum = $pensum.val();
+
+		if(pensum != '')
+		{
+			bootbox.confirm("El pensum esta en proceso de construccion, si cambia la carrera se perderan los datos.\n Desea crear nuevo pensum?", function(result)
+			{
+				// ACTUALIZAR PENSUM
+
+				if(result == true)
+				{
+					// $.ajax({
+					// 	cache: false,
+					// 	type: 'POST',
+					// 	data: 'id_dep=' + value,
+					// 	dataType: "json",
+					// 	url: base_url + 'pensum/json_carrera',
+					// 	success: function(arrayObject)
+					// 	{
+					// 		buildSelect($selectCarrer, arrayObject, 'add');
+					// 	},
+					// 	error: function()
+					// 	{ alert('Error'); }
+					// });
+				}else
+					$("select#select_carrera option[value="+ $carrera.val() +"]").attr("selected",true);
+			})
+		}
+	});
+
+
 	// Controlar el boton de Next y Prev
 	$buttonNext.on('click', function()
 	{

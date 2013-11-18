@@ -71,10 +71,48 @@
 					{/if}
 
 					{if $data eq "addElect"}
-						<div class="center">
-							<select>
-								<option>Valor</option>
-							</select>
+						<h3 class="lighter block green">Agregar seminario a la materia que pertenesca</h3>
+
+						<div class="row-fluid">
+							<div class="span5">
+								<table id="seminario" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>Nombre</th>
+											<th>Accion</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										{foreach from=$seminario key=key item=item}
+											<tr>
+												<td>{$item['nombre']}</td>
+												<td>
+													<div class="center">
+														<button class="btn btn-mini btn-warning" value="{$item['id']}">
+															<i class="icon-check bigger-120"></i>
+															Seleccionar
+														</button>
+													</div>
+												</td>
+											</tr>
+										{/foreach}	
+									</tbody>							
+
+
+								</table>
+							</div>
+
+							<div class="span7">
+								<table id="sem-mat">
+									<thead>
+										<tr>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>									
+								</table>
+							</div>
 						</div>
 					{/if}
 

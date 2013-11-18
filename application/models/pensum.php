@@ -24,12 +24,73 @@ class Pensum extends CI_Model
 		return $query->result_array();
 	}
 
+	public function get_seminario()
+	{
+		$this->db->select(array('id', 'nombre'));
+		$this->db->from('seminario');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 	public function insert_pensum($id_carrera)
 	{
 		$data = array( 'estatus' => 'ACTIVO' ,
 					   'carrera_id' => $id_carrera);
 
-		$this->db->insert('pensum', $data); 
+		$statusInsert = $this->db->insert('pensum', $data);
+		return $statusInsert;
 	}
+
+	public function get_last_pensum()
+	{
+		$this->db->select_max('id');
+		$query = $this->db->get('pensum');
+		return $query->result_array();
+	}
+
+	public function get_pensum($id)
+	{
+		$this->db->from('pensum');
+		$this->db->where('id', $id);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	public function update_pensum($id, $arrayUpdate)
+	{
+		$this->db->where('id', $id);
+		$statusUpdate = $this->db->update('pesnum', $arrayUpdate);
+		return $statusUpdate; 
+	}
+
+	public function consultar_mat_a()
+	{
+		$this->db->select('*, nombre as value, nombre as label');
+		$this->db->from('materia');
+		$query = $this->db->get();
+		$result = array();
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $row)
+			{
+				$result[]= $row;
+			}
+		}
+		return $result;
+	}
+
+	public function insertar_semestre($pensum_id, $materia_codigo, $semestre)
+    {	
+    	$data = array('materia_codigo' => $materia_codigo, 'pensum_id' => $pensum_id, 'semestre' => $semestre);
+    	return $this->db->insert('materia_has_pensum',$data);
+    }
+
+    public function eliminar_semestre($pensum_id, $materia_codigo)
+    {
+    	$array = array('pensum_id' => $pensum_id, 'materia_codigo' => $materia_codigo);
+    	$this->db->where($array);
+		return $this->db->delete('materia_has_pensum');
+    }
+
 }
 ?>

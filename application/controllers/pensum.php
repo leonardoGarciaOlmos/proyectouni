@@ -57,7 +57,7 @@ class Pensum_Controller extends CI_Controller
 		$stepConten = array('selectCarre', 'addMateria', 'addElect', 'finish');
 		$totalStep = count($step);
 
-
+		$this->smarty->assign('seminario', $class->get_seminario());
 		$this->smarty->assign('totalStep', $totalStep);
 		$this->smarty->assign('ciPath', base_url());
 		$this->smarty->assign('title', 'Agregar Pensum');
@@ -70,9 +70,11 @@ class Pensum_Controller extends CI_Controller
 		$js_files = array(base_url().'assets/template/js/ace-elements.min.js',
 	    				  base_url().'assets/js/pensum.js',
 	    				  base_url().'assets/js/semestre.js',
-	    				  base_url().'assets/js/bootbox.min.js');
+	    				  base_url().'assets/js/bootbox.min.js',
+	    				  base_url().'assets/template/js/jquery-ui-1.10.3.full.min.js');
 
-		$css_files = array(base_url().'assets/css/wisard.css'); 
+		$css_files = array(base_url().'assets/css/wisard.css',
+						   base_url().'assets/grocery_crud/themes/twitter-bootstrap/css/style.css'); 
 
 	    $this->smarty->assign('output', $output);
 	    $this->smarty->assign('css_files', $css_files);
@@ -81,20 +83,61 @@ class Pensum_Controller extends CI_Controller
 	}
 
 
+	public function agregar_semestre()
+	{
+		$this->load->model('Pensum');
+		$modelPensum = new Pensum;
+
+		echo $modelPensum->insertar_semestre($_POST['pensum'], $_POST['materia'], $_POST['semes']);
+	}
+
+	function borrar_semestre()
+	{
+		$this->load->model('Pensum');
+		$modelPensum = new Pensum;
+
+		echo $modelPensum->eliminar_semestre($_POST['pensum'], $_POST['materia']);
+	}
+
+
 	public function json_carrera()
 	{
 		$this->load->model('Pensum');
-		$class = new Pensum;
+		$modelPensum = new Pensum;
 
-		$array = $class->get_carrera($_POST['id_dep']);
+		$array = $modelPensum->get_carrera($_POST['id_dep']);
 		echo json_encode($array);
 	}
 
 
 	public function json_insert_pensum()
 	{
-		
+		$this->load->model('Pensum');
+		$modelPensum = new Pensum;
+		$return = $modelPensum->insert_pensum($_POST['id_carrera']);
+
+		if($return){
+			$idPensum = $modelPensum->get_last_pensum();
+			$returnVal = $modelPensum->get_pensum($idPensum[0]['id']);
+		}
+		else
+			$returnVal = '';
+
+		echo json_encode($returnVal);
 	}
+
+	public function json_get_materia()
+	{
+		$this->load->model('Pensum');
+		$modelPensum = new Pensum;
+		echo json_encode($modelPensum->consultar_mat_a());
+	}
+
+
+	/*public function json_update_pensum()
+	{
+		
+	}*/
 
 }
 ?>
