@@ -22,7 +22,7 @@ $(document).ready(function()
 
 		if(value == '')
 		{
-			buildSelect($selectCarrer, '', null);
+			buildSelect($selectCarrer, '', null, '');
 		}
 		else{
 
@@ -34,7 +34,7 @@ $(document).ready(function()
 				url: base_url + 'pensum/json_carrera',
 				success: function(arrayObject)
 				{
-					buildSelect($selectCarrer, arrayObject, 'add');
+					buildSelect($selectCarrer, arrayObject, 'add', 'Seleccionar Carrera');
 				},
 				error: function()
 				{ alert('Error'); }
@@ -48,27 +48,31 @@ $(document).ready(function()
 		var val = $(this).val();
 		var pensum = $pensum.val();
 
-		if(pensum != '')
+		if(pensum != '' && val != '')
 		{
-			bootbox.confirm("El pensum esta en proceso de construccion, si cambia la carrera se perderan los datos.\n Desea crear nuevo pensum?", function(result)
+			bootbox.confirm("El pensum esta en proceso de construccion, si cambia la carrera se perderan los datos.<br>Desea crear un nuevo pensum?", function(result)
 			{
 				// ACTUALIZAR PENSUM
-
 				if(result == true)
 				{
-					// $.ajax({
-					// 	cache: false,
-					// 	type: 'POST',
-					// 	data: 'id_dep=' + value,
-					// 	dataType: "json",
-					// 	url: base_url + 'pensum/json_carrera',
-					// 	success: function(arrayObject)
-					// 	{
-					// 		buildSelect($selectCarrer, arrayObject, 'add');
-					// 	},
-					// 	error: function()
-					// 	{ alert('Error'); }
-					// });
+					$.ajax({
+						cache: false,
+						type: 'POST',
+						data: {pensum_id: pensum, carrera_id: val},
+						dataType: "json",
+						url: base_url + 'pensum/json_update_pensum',
+						success: function(val)
+						{
+							if(val == true)
+							{
+								$accordion.html('<h4>No existe semestre ni materia</h4>');
+								$accordionSem.html('<h4>No existe seminario registrado</h4>');
+								$semestre.val('1');
+							}
+						},
+						error: function()
+						{ alert('Error'); }
+					});
 				}else
 					$("select#select_carrera option[value="+ $carrera.val() +"]").attr("selected",true);
 			})
@@ -126,7 +130,7 @@ $(document).ready(function()
 	}
 
 
-	function buildSelect(objectSelect, objectValue, opc)
+	function buildSelect(objectSelect, objectValue, opc, msj)
 	{
 		if(opc === null)
 		{	
@@ -137,7 +141,7 @@ $(document).ready(function()
 			var length = objectValue.length;
 
 			objectSelect.removeAttr('disabled');
-			objectSelect.html('<option value="">Seleccionar carrera</option>');
+			objectSelect.html('<option value="">' +msj+ '</option>');
 			for(var i = 0; i < length; i++)
 			{
 				objectSelect.append('<option value="'+objectValue[i].id+'">'+objectValue[i].nombre+'</option>');
@@ -146,6 +150,26 @@ $(document).ready(function()
 	}
 
 
+	function buildSelect(objectSelect, objectValue, opc, msj)
+	{
+		if(opc === null)
+		{	
+			objectSelect.html('<option value="">...</option>');
+			objectSelect.attr('disabled', 'disabled');
+		}else if(opc === 'add')
+		{
+			var length = objectValue.length;
+
+			objectSelect.removeAttr('disabled');
+			objectSelect.html('<option value="">' +msj+ '</option>');
+			for(var i = 0; i < length; i++)
+			{
+				objectSelect.append('<option value="'+objectValue[i].id+'">'+objectValue[i].nombre+'</option>');
+			}
+		}
+	}
+
+	
 	function managerStep(opc)
 	{
 		var ret = false;
@@ -181,6 +205,11 @@ $(document).ready(function()
 
 				case totalStep:
 					$buttonNext.html('Finalizar <i class="icon-arrow-right icon-on-right"></i>');
+				break;
+
+				case 3:
+					$.getJSON(base_url+'pensum/json_mate_has_pens', { pensum_id: $pensum.val() }, function(data)
+					{ buildSelect($materia_pensum, data, 'add', 'Seleccionar Materia'); });
 				break;
 
 				default:

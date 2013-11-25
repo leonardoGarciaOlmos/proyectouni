@@ -45,7 +45,7 @@ class Pensum_Controller extends CI_Controller
 
 	public function _callback_columns($value, $row)
 	{
-		return '<a id="update-pensum" class="btn" href="#">Modificar</a>';
+		return '<a id="update-pensum" class="btn" href="'.base_url().'pensum/update/'.$row->id.'">Modificar</a>';
 	}
 
 
@@ -57,7 +57,7 @@ class Pensum_Controller extends CI_Controller
 		$stepConten = array('selectCarre', 'addMateria', 'addElect', 'finish');
 		$totalStep = count($step);
 
-		$this->smarty->assign('seminario', $class->get_seminario());
+		$this->smarty->assign('status', 'add');
 		$this->smarty->assign('totalStep', $totalStep);
 		$this->smarty->assign('ciPath', base_url());
 		$this->smarty->assign('title', 'Agregar Pensum');
@@ -71,7 +71,43 @@ class Pensum_Controller extends CI_Controller
 	    				  base_url().'assets/js/pensum.js',
 	    				  base_url().'assets/js/semestre.js',
 	    				  base_url().'assets/js/bootbox.min.js',
-	    				  base_url().'assets/template/js/jquery-ui-1.10.3.full.min.js');
+	    				  base_url().'assets/template/js/jquery-ui-1.10.3.full.min.js',
+	    				  base_url().'assets/js/seminario.js');
+
+		$css_files = array(base_url().'assets/css/wisard.css',
+						   base_url().'assets/grocery_crud/themes/twitter-bootstrap/css/style.css'); 
+
+	    $this->smarty->assign('output', $output);
+	    $this->smarty->assign('css_files', $css_files);
+	    $this->smarty->assign('js_files', $js_files);
+	    $this->smarty->display('index.tpl');
+	}
+
+
+	public function update($pensum_id)
+	{
+		$this->load->model('Pensum');
+		$class = new Pensum;
+		$step = array('Seleccionar Carrea', 'Añadir Materia', 'Añadir Electivas', 'Finalizar');
+		$stepConten = array('selectCarre', 'addMateria', 'addElect', 'finish');
+		$totalStep = count($step);
+
+		$this->smarty->assign('status', 'update');
+		$this->smarty->assign('totalStep', $totalStep);
+		$this->smarty->assign('ciPath', base_url());
+		$this->smarty->assign('title', 'Actualizar Pensum');
+	    $this->smarty->assign('step', $step);
+	    $this->smarty->assign('stepConten', $stepConten);
+	    $this->smarty->assign('depart', $class->get_departamento_pensum($pensum_id));
+	    $this->smarty->assign('carrera', $class->get_carrera_pensum($pensum_id));
+
+		$output = $this->smarty->fetch('wizard.tpl');
+		$js_files = array(base_url().'assets/template/js/ace-elements.min.js',
+	    				  base_url().'assets/js/pensum.js',
+	    				  base_url().'assets/js/semestre.js',
+	    				  base_url().'assets/js/bootbox.min.js',
+	    				  base_url().'assets/template/js/jquery-ui-1.10.3.full.min.js',
+	    				  base_url().'assets/js/seminario.js');
 
 		$css_files = array(base_url().'assets/css/wisard.css',
 						   base_url().'assets/grocery_crud/themes/twitter-bootstrap/css/style.css'); 
@@ -91,7 +127,8 @@ class Pensum_Controller extends CI_Controller
 		echo $modelPensum->insertar_semestre($_POST['pensum'], $_POST['materia'], $_POST['semes']);
 	}
 
-	function borrar_semestre()
+
+	public function borrar_semestre()
 	{
 		$this->load->model('Pensum');
 		$modelPensum = new Pensum;
@@ -106,6 +143,26 @@ class Pensum_Controller extends CI_Controller
 		$modelPensum = new Pensum;
 
 		$array = $modelPensum->get_carrera($_POST['id_dep']);
+		echo json_encode($array);
+	}
+
+
+	public function json_seminario()
+	{
+		$this->load->model('Pensum');
+		$modelPensum = new Pensum;
+
+		$array = $modelPensum->get_seminario();
+		echo json_encode($array);
+	}
+
+
+	public function json_mate_has_pens()
+	{
+		$this->load->model('Pensum');
+		$modelPensum = new Pensum;
+
+		$array = $modelPensum->get_mat_has_pen($_REQUEST['pensum_id']);
 		echo json_encode($array);
 	}
 
@@ -134,10 +191,13 @@ class Pensum_Controller extends CI_Controller
 	}
 
 
-	/*public function json_update_pensum()
+	public function json_update_pensum()
 	{
-		
-	}*/
+		$this->load->model('Pensum');
+		$modelPensum = new Pensum;
+		$arrayUpdate = array ('carrera_id' => $_POST['carrera_id']);
+		echo json_encode($modelPensum->update_pensum($_POST['pensum_id'], $arrayUpdate));
+	}
 
 }
 ?>

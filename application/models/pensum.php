@@ -15,6 +15,19 @@ class Pensum extends CI_Model
 		return $query->result_array();
 	}
 
+	public function get_departamento_pensum($id)
+	{
+		$this->db->select(array('DEP.id', 'DEP.nombre'));
+		$this->db->from('pensum as PEN');
+		$this->db->from('carrera as CAR');
+		$this->db->from('departamento as DEP');
+		$this->db->where('PEN.carrera_id = CAR.id');
+		$this->db->where('CAR.departamento_id = DEP.id');
+		$this->db->where('PEN.id', $id);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 	public function get_carrera($id_departamento)
 	{
 		$this->db->select(array('id', 'nombre'));
@@ -24,10 +37,30 @@ class Pensum extends CI_Model
 		return $query->result_array();
 	}
 
+	public function get_carrera_pensum($id)
+	{
+		$this->db->select(array('CAR.id', 'CAR.nombre'));
+		$this->db->from('pensum as PEN');
+		$this->db->from('carrera as CAR');
+		$this->db->where('PEN.carrera_id = CAR.id');
+		$this->db->where('PEN.id', $id);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 	public function get_seminario()
 	{
 		$this->db->select(array('id', 'nombre'));
 		$this->db->from('seminario');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	public function get_mat_has_pen($pensum)
+	{
+		$this->db->select(array('id', 'nombre'));
+		$this->db->from('list_mat_has_pensum');
+		$this->db->where('pensum', $pensum);
 		$query = $this->db->get();
 		return $query->result_array();
 	}
@@ -59,7 +92,7 @@ class Pensum extends CI_Model
 	public function update_pensum($id, $arrayUpdate)
 	{
 		$this->db->where('id', $id);
-		$statusUpdate = $this->db->update('pesnum', $arrayUpdate);
+		$statusUpdate = $this->db->update('pensum', $arrayUpdate);
 		return $statusUpdate; 
 	}
 

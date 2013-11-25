@@ -40,17 +40,33 @@
 						<h3 class="lighter block green">Seleccione la carrera de su preferencia</h3>
 						<div class="center">
 							<h3>Departamento</h3>
-							<select id="select_departamento">
-								<option value="">Seleccionar departamento</option>
-								{foreach from=$depart key=key item=item}
-									<option value="{$item['id']}">{$item['nombre']}</option>
-								{/foreach}
-							</select>
+							{if $status eq "add"}
+								<select id="select_departamento">
+									<option value="">Seleccionar departamento</option>
+									{foreach from=$depart key=key item=item}
+										<option value="{$item['id']}">{$item['nombre']}</option>
+									{/foreach}
+								</select>
 
-							<h3>Carrera</h3>
-							<select disabled="disabled" id="select_carrera">
-								<option value="">...</option>
-							</select>
+								<h3>Carrera</h3>
+								<select disabled="disabled" id="select_carrera">
+									<option value="">...</option>
+								</select>
+								
+							{elseif $status eq "update"}
+								<select id="select_departamento" disabled="disabled">
+									{foreach from=$depart key=key item=item}
+										<option value="{$item['id']}">{$item['nombre']}</option>
+									{/foreach}
+								</select>
+
+								<h3>Carrera</h3>
+								<select disabled="disabled" id="select_carrera" disabled="disabled">
+									{foreach from=$carrera key=key item=item}
+										<option value="{$item['id']}">{$item['nombre']}</option>
+									{/foreach}
+								</select>
+							{/if}
 						</div>
 					{/if}
 
@@ -64,56 +80,47 @@
 							</div>
 						</div>
 						
-						<input type="hidden" value="1" id="num_semestre" />
-						<div id="accordion" class="accordion-style1 panel-group">
-							<h4>No existe semestre ni materia</h4>
-						</div>
+						{if $status eq "add"}
+							<input type="hidden" value="1" id="num_semestre" />
+							<div id="accordion" class="accordion-style1 panel-group">
+								<h4>No existe semestre ni materia</h4>
+							</div>
+						{elseif $status eq "update"}
+							<h3>Materia</h3>
+						{/if}
+
+						
 					{/if}
 
 					{if $data eq "addElect"}
 						<h3 class="lighter block green">Agregar seminario a la materia que pertenesca</h3>
 
 						<div class="row-fluid">
-							<div class="span5">
-								<table id="seminario" class="table table-striped table-bordered table-hover">
-									<thead>
-										<tr>
-											<th>Nombre</th>
-											<th>Accion</th>
-										</tr>
-									</thead>
-
-									<tbody>
-										{foreach from=$seminario key=key item=item}
-											<tr>
-												<td>{$item['nombre']}</td>
-												<td>
-													<div class="center">
-														<button class="btn btn-mini btn-warning" value="{$item['id']}">
-															<i class="icon-check bigger-120"></i>
-															Seleccionar
-														</button>
-													</div>
-												</td>
-											</tr>
-										{/foreach}	
-									</tbody>							
-
-
-								</table>
+							<div class="span4" >
+								<select id="seminario">
+									<option value="">...</option>
+								</select>
 							</div>
 
-							<div class="span7">
-								<table id="sem-mat">
-									<thead>
-										<tr>
-											<th></th>
-											<th></th>
-										</tr>
-									</thead>									
-								</table>
+							<div class="span4" >
+								<select id="mat_has_pensum">
+									<option value="">...</option>
+								</select>
+							</div>
+
+							<div class="span4 center" >
+								<button class="btn btn-primary" name="agregarSemes" id="addSeminario"><i class="icon-plus icon-white"></i> Agregar Seminario</button>
 							</div>
 						</div>
+
+						{if $status eq "add"}
+							<div id="accordion-semestre" class="accordion-style1 panel-group" style="margin-top:10px;">
+								<h4>No existe seminario registrado</h4>
+							</div>
+						{elseif $status eq "update"}
+							<h3>No existe seminario registrado</h3>
+						{/if}
+
 					{/if}
 
 					{if $data eq "finish"}
