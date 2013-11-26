@@ -65,6 +65,27 @@ class Pensum extends CI_Model
 		return $query->result_array();
 	}
 
+	public function get_semestre_has_pensum($pensum)
+	{
+		$this->db->select('*');
+		$this->db->from('materia_has_pensum');
+		$this->db->where('pensum_id', $pensum);
+		$this->db->group_by('semestre asc');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	public function get_materia_has_semestre($pensum)
+	{
+		$this->db->select('MAT.*, MHP.semestre');
+		$this->db->from('materia as MAT');
+		$this->db->from('materia_has_pensum as MHP');
+		$this->db->where('MHP.pensum_id', $pensum);
+		$this->db->where('MHP.materia_codigo = MAT.codigo');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 	public function insert_pensum($id_carrera)
 	{
 		$data = array( 'estatus' => 'ACTIVO' ,

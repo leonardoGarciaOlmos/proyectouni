@@ -64,7 +64,8 @@ class Pensum_Controller extends CI_Controller
 	    $this->smarty->assign('step', $step);
 	    $this->smarty->assign('stepConten', $stepConten);
 	    $this->smarty->assign('depart', $class->get_departamento());
-
+	    $this->smarty->assign('id_pensum', '');
+	    
 
 		$output = $this->smarty->fetch('wizard.tpl');
 		$js_files = array(base_url().'assets/template/js/ace-elements.min.js',
@@ -93,6 +94,7 @@ class Pensum_Controller extends CI_Controller
 		$totalStep = count($step);
 
 		$this->smarty->assign('status', 'update');
+		$this->smarty->assign('id_pensum', $pensum_id);
 		$this->smarty->assign('totalStep', $totalStep);
 		$this->smarty->assign('ciPath', base_url());
 		$this->smarty->assign('title', 'Actualizar Pensum');
@@ -100,6 +102,8 @@ class Pensum_Controller extends CI_Controller
 	    $this->smarty->assign('stepConten', $stepConten);
 	    $this->smarty->assign('depart', $class->get_departamento_pensum($pensum_id));
 	    $this->smarty->assign('carrera', $class->get_carrera_pensum($pensum_id));
+	    $this->smarty->assign('semestre', $class->get_semestre_has_pensum($pensum_id));
+	    $this->smarty->assign('MHS', $class->get_materia_has_semestre($pensum_id));
 
 		$output = $this->smarty->fetch('wizard.tpl');
 		$js_files = array(base_url().'assets/template/js/ace-elements.min.js',

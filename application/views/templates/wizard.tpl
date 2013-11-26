@@ -1,6 +1,6 @@
 <input type="hidden" value="{$totalStep}" id="total-step" />
 <input type="hidden" value="" id="id_carrera" />
-<input type="hidden" value="" id="id_pensum" />
+<input type="hidden" value="{$id_pensum}" id="id_pensum" />
 
 <div class="widget-box">
 	<div class="widget-header widget-header-blue widget-header-flat">
@@ -86,7 +86,64 @@
 								<h4>No existe semestre ni materia</h4>
 							</div>
 						{elseif $status eq "update"}
-							<h3>Materia</h3>
+							{$coundSemestre = 0}
+							<div id="accordion" class="accordion-style1 panel-group">
+								{foreach from=$semestre key=key item=data}
+								{$coundSemestre = $data['semestre']}
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h3 class="panel-title">
+										<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{$data['semestre']}">
+										<i class="bigger-110 icon-angle-right" data-icon-hide="icon-angle-down" data-icon-show="icon-angle-right"></i>
+										&nbspSemestre #{$data['semestre']}
+										</a>
+										</h3>
+									</div>
+
+									<div class="panel-collapse collapse" id="collapse{$data['semestre']}" style="height: 0px">
+										<div class="panel-body">
+											<input type="hidden" value="{$data['semestre']}", name="semestre" id="semestre">
+											<input type="hidden" value="" name="materia_id" id="materia_id">
+											<div class="span1"> <h4>Materia</h4> </div>
+											<div class="span3"> <input type="text" value="" name="materia" id="materia"> </div>
+											<div class="span12">
+												<table class="table" id="tableMateria">
+													<tr>
+														<td><h5>Codigo</h5></td>
+														<td><h5>Uni. Curricular</h5></td>
+														<td><h5>H. Teoricas</h5></td>
+														<td><h5>H. Practicas</h5></td>
+														<td><h5>Total Horas</h5></td>
+														<td><h5>Uni. Credito</h5></td>
+														<td><h5>Cod. Prelacion</h5></td>
+														<td></td>
+													</tr>
+													{foreach from=$MHS key=key item=data}
+														{if $coundSemestre eq $data['semestre']}
+														<tr>
+															<td>{$data['codigo']}</td>
+															<td>{$data['nombre']}</td>
+															<td>{$data['horas_teoricas']}</td>
+															<td>{$data['horas_practicas']}</td>
+															<td>{$data['total_horas']}</td>
+															<td>{$data['uni_credito']}</td>
+															<td>{$data['cod_prelacion']}</td>
+															<td><button class="btn btn-mini btn-danger" id="eliminarMat" type="button" value="{$data['codigo']}"><i class="icon-remove-sign"></i></td>
+														</tr>
+														{/if}
+													{/foreach}
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								{foreachelse}
+									<h4>No existe semestre ni materia</h4>
+								{/foreach}
+							</div>
+
+							<input type="hidden" value="{$coundSemestre+1}" id="num_semestre" />
+
 						{/if}
 
 						
