@@ -1,5 +1,6 @@
 $(document).ready(function()
 {
+
 	$seminario  	  = $('select#seminario');
 	$materia_pensum   = $('select#mat_has_pensum');
 	$addSeminario	  = $('#addSeminario');
@@ -43,6 +44,35 @@ $(document).ready(function()
 	});
 
 
+	//+----------------------------------------------------------+
+	//|   ELIMINAR SEMINARIO                                  	 |
+	//+----------------------------------------------------------+
+	//|   Se elimina el seminario del pensum y materia 		     |
+	//+----------------------------------------------------------+
+	$(document).on('click', 'button#eliSeminario', function()
+	{
+		var $tablaTr  	  = $(this).parent().parent();
+		var seminarioId   = $(this).val();
+		var materiaCodigo = $(this).attr('name');
+
+		$.ajax(
+		{
+			url: base_url+'pensum/borrar_seminario',
+			type: "POST",
+			data: {seminario_id: seminarioId, pensum_id: $pensum.val(), materia_codigo: materiaCodigo},
+			success: function()
+			{ 
+				$tablaTr.fadeOut(500, function()
+				{
+					$(this).remove();
+				}); 
+			},
+			error: function(error)
+			{ alert("Problema al intentar eliminar"); }
+		});
+	});
+
+
 	//+-------------------------+
 	//|			FUNCIONES		|
 	//+-------------------------+
@@ -81,6 +111,7 @@ $(document).ready(function()
 		panel += '</div>';
 
 		panel += '<div class="panel-collapse collapse" id="collapse'+object.idMAT+'" style="height: 0px;">';
+		panel += '<div class="panel-body">';
         panel += '<div class="span12">';
         panel += '<table class="table" id="tableSeminario">';
         panel += '<tr>';
@@ -89,6 +120,8 @@ $(document).ready(function()
         panel += '<td></td>';
         panel += '</tr>';
         panel += '</table>';
+        panel += '</div>';
+		panel += '</div>';
 		panel += '</div>';
 		panel += '</div>';
 
@@ -109,18 +142,80 @@ $(document).ready(function()
 		});
 
 		if(countLabel == 0)
-		{ labelTreeDOM.html(panel); }
-		else
+		{ 
+			labelTreeDOM.html(panel).promise().done(function()
+			{
+				labelTreeDOM.find('a.accordion-toggle[href="#collapse'+object.idMAT+'"]').attr('class', 'accordion-toggle');
+				labelTreeDOM.find('div.panel-collapse[id="collapse'+object.idMAT+'"]').attr('class', 'panel-collapse in collapse');
+				labelTreeDOM.find('div.panel-collapse[id="collapse'+object.idMAT+'"]').css('height', 'auto');
+				add_sem_has_mat(object.idSEM, object.nameSEM, object.idMAT, $('div#collapse'+object.idMAT+' div table#tableSeminario'));
+			});
+		}else
 		{
 			if(search == false)
-			{ labelTreeDOM.append(panel); }	
+			{ 
+				labelTreeDOM.append(panel).promise().done(function()
+				{
+					labelTreeDOM.find('a.accordion-toggle[href="#collapse'+object.idMAT+'"]').attr('class', 'accordion-toggle');
+					labelTreeDOM.find('div.panel-collapse[id="collapse'+object.idMAT+'"]').attr('class', 'panel-collapse in collapse');
+					labelTreeDOM.find('div.panel-collapse[id="collapse'+object.idMAT+'"]').css('height', 'auto');
+					add_sem_has_mat(object.idSEM, object.nameSEM, object.idMAT, $('div#collapse'+object.idMAT+' div table#tableSeminario'));
+				})
+			}else
+			{
+				labelTreeDOM.find('a.accordion-toggle[href="#collapse'+object.idMAT+'"]').attr('class', 'accordion-toggle');
+				labelTreeDOM.find('div.panel-collapse[id="collapse'+object.idMAT+'"]').attr('class', 'panel-collapse in collapse');
+				labelTreeDOM.find('div.panel-collapse[id="collapse'+object.idMAT+'"]').css('height', 'auto');
+				add_sem_has_mat(object.idSEM, object.nameSEM, object.idMAT, $('div#collapse'+object.idMAT+' div table#tableSeminario'));
+			}
+
 		}	
 	}
 
 
-	function add_sem_has_mat()
+	function add_sem_has_mat(codigo, seminario, materia, labelTreeDOM)
 	{
+		$.ajax({
+				cache: false,
+				type: 'POST',
+				data: {materia_codigo: materia, seminario_id: codigo, pensum_id: $pensum.val()},
+				dataType: "json",
+				url: base_url + 'pensum/json_insert_seminario',
+				success: function(object)
+				{
+					if(object)
+					{
+						var labelTable  = '<tr>';
+						labelTable += '<td>'+codigo+'</td>';
+						labelTable += '<td>'+seminario+'</td>';
+						labelTable += '<td><button class="btn btn-mini btn-danger" name="'+materia+'" id="eliSeminario" type="button" value="'+codigo+'"><i class="icon-remove-sign"></i></td>';
+						labelTable += '</tr>';
 
+						labelTreeDOM.append(labelTable);
+					}else
+					{
+						var labelTable  = '<tr class="error">';
+						labelTable += '<td style="text-align:center;" colspan="3"><h5>Problemas al registrar seminario en materia</h5></td>';
+						labelTable += '</tr>';
+						labelTreeDOM.append(labelTable);
+						labelTreeDOM.find("tbody tr.error").fadeOut(2500, function()
+						{
+							$(this).remove();
+						});
+					}
+				},
+				error: function()
+				{
+					var labelTable  = '<tr class="error">';
+					labelTable += '<td style="text-align:center;" colspan="3"><h5>Problemas al registrar seminario en materia</h5></td>';
+					labelTable += '</tr>';
+					labelTreeDOM.append(labelTable);
+					labelTreeDOM.find("tbody tr.error").fadeOut(2500, function()
+					{
+						$(this).remove();
+					});
+				}
+			});
 	}
 
 });

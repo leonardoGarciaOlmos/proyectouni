@@ -86,6 +86,29 @@ class Pensum extends CI_Model
 		return $query->result_array();
 	}
 
+	public function get_materia_has_seminario($pensum)
+	{
+		$this->db->select('MAT.codigo, MAT.nombre');
+		$this->db->from('materia_has_seminario as MHS');
+		$this->db->from('materia as MAT');
+		$this->db->where('MHS.pensum_id', $pensum);
+		$this->db->where('MAT.codigo = MHS.materia_codigo');
+		$this->db->group_by('MHS.materia_codigo');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	public function get_seminario_has_pensum($pensum)
+	{
+		$this->db->select('SEM.id, SEM.nombre, MHS.materia_codigo');
+		$this->db->from('materia_has_seminario as MHS');
+		$this->db->from('seminario as SEM');
+		$this->db->where('MHS.pensum_id', $pensum);
+		$this->db->where('SEM.id = MHS.seminario_id');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
 	public function insert_pensum($id_carrera)
 	{
 		$data = array( 'estatus' => 'ACTIVO' ,
@@ -144,6 +167,19 @@ class Pensum extends CI_Model
     	$array = array('pensum_id' => $pensum_id, 'materia_codigo' => $materia_codigo);
     	$this->db->where($array);
 		return $this->db->delete('materia_has_pensum');
+    }
+
+    public function insertar_seminario($materia_codigo, $seminario_id, $pensum_id)
+    {
+    	$data = array('materia_codigo' => $materia_codigo, 'seminario_id' => $seminario_id, 'pensum_id' => $pensum_id);
+    	return $this->db->insert('materia_has_seminario',$data);
+    }
+
+    public function eliminar_seminario($seminario_id, $pensum_id, $materia_codigo)
+    {
+    	$array = array('seminario_id' => $seminario_id, 'pensum_id' => $pensum_id, 'materia_codigo' => $materia_codigo);
+    	$this->db->where($array);
+		return $this->db->delete('materia_has_seminario');
     }
 
 }

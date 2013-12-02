@@ -104,6 +104,8 @@ class Pensum_Controller extends CI_Controller
 	    $this->smarty->assign('carrera', $class->get_carrera_pensum($pensum_id));
 	    $this->smarty->assign('semestre', $class->get_semestre_has_pensum($pensum_id));
 	    $this->smarty->assign('MHS', $class->get_materia_has_semestre($pensum_id));
+	    $this->smarty->assign('MatHasSem', $class->get_materia_has_seminario($pensum_id));
+	    $this->smarty->assign('SemHasPen', $class->get_seminario_has_pensum($pensum_id));
 
 		$output = $this->smarty->fetch('wizard.tpl');
 		$js_files = array(base_url().'assets/template/js/ace-elements.min.js',
@@ -138,6 +140,14 @@ class Pensum_Controller extends CI_Controller
 		$modelPensum = new Pensum;
 
 		echo $modelPensum->eliminar_semestre($_POST['pensum'], $_POST['materia']);
+	}
+
+	public function borrar_seminario()
+	{
+		$this->load->model('Pensum');
+		$modelPensum = new Pensum;
+
+		echo $modelPensum->eliminar_seminario($_POST['seminario_id'], $_POST['pensum_id'], $_POST['materia_codigo']);
 	}
 
 
@@ -203,5 +213,13 @@ class Pensum_Controller extends CI_Controller
 		echo json_encode($modelPensum->update_pensum($_POST['pensum_id'], $arrayUpdate));
 	}
 
+
+	public function json_insert_seminario()
+	{
+		$this->load->model('Pensum');
+		$modelPensum = new Pensum;
+		$return = $modelPensum->insertar_seminario($_POST['materia_codigo'], $_POST['seminario_id'], $_POST['pensum_id']);
+		echo json_encode($return);
+	}
 }
 ?>

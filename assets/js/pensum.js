@@ -209,7 +209,7 @@ $(document).ready(function()
 
 				case 3:
 					$.getJSON(base_url+'pensum/json_mate_has_pens', { pensum_id: $pensum.val() }, function(data)
-					{ buildSelect($materia_pensum, data, 'add', 'Seleccionar Materia'); });
+					{ buildSelect($('select#mat_has_pensum'), data, 'add', 'Seleccionar Materia'); });
 				break;
 
 				default:

@@ -175,7 +175,46 @@
 								<h4>No existe seminario registrado</h4>
 							</div>
 						{elseif $status eq "update"}
-							<h3>No existe seminario registrado</h3>
+							<div id="accordion-semestre" class="accordion-style1 panel-group" style="margin-top:10px;">
+
+								{foreach from=$MatHasSem key=key item=data}
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h3 class="panel-title">
+											<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse{$data['codigo']}">
+											<i class="bigger-110 icon-angle-right" data-icon-hide="icon-angle-down" data-icon-show="icon-angle-right"></i>
+											&nbsp;{$data['nombre']}
+											</a>
+											</h3>
+										</div>
+
+										<div class="panel-collapse collapse" id="collapse{$data['codigo']}" style="height: 0px;">
+											<div class="panel-body">
+										        <div class="span12">
+											        <table class="table" id="tableSeminario">
+												        <tr>
+													        <td><h5>Codigo</h5></td>
+													        <td><h5>Seminario</h5></td>
+													        <td></td>
+												        </tr>
+												        {foreach from=$SemHasPen key=key item=dataAux}
+												        	{if $dataAux['materia_codigo'] eq $data['codigo']}
+												        		<tr>
+															        <td>{$dataAux['id']}</td>
+															        <td>{$dataAux['nombre']}</td>
+															        <td><button class="btn btn-mini btn-danger" id="eliSeminario" type="button" name="{$dataAux['materia_codigo']}" value="{$dataAux['id']}"><i class="icon-remove-sign"></i></td>
+														        </tr>
+												        	{/if}
+												        {/foreach}
+											        </table>
+										        </div>
+											</div>
+										</div>
+									</div>
+								{foreachelse}
+									<h4>No existe seminario registrado</h4>
+								{/foreach}
+							</div>
 						{/if}
 
 					{/if}
